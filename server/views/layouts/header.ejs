@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard - FiFash</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+      .container {
+        max-width: 1200px;
+      }
+      body {
+        display: flex;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .sidebar {
+        min-width: 250px;
+        max-width: 250px;
+        background-color: #343a40;
+        color: #fff;
+        transition: all 0.3s;
+        flex-shrink: 0;
+        position: sticky; /* Để sidebar cuộn theo màn hình */
+        top: 0;
+        height: 100vh; /* Để sidebar chiếm toàn bộ chiều cao màn hình */
+      }
+      .sidebar .logo-header {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        text-decoration: none;
+        color: #fff;
+      }
+      .sidebar .logo-header img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1; /* Để nội dung sidebar co giãn đầy đủ */
+      }
+      .sidebar ul li {
+        padding: 15px 20px;
+      }
+      .sidebar ul li a {
+        color: #adb5bd;
+        text-decoration: none;
+        display: block;
+      }
+      .sidebar ul li a:hover {
+        color: #fff;
+        background-color: #495057;
+        border-radius: 4px;
+      }
+      .main-content {
+        flex: 1;
+        padding: 20px;
+        background-color: #f8f9fa;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      table th,
+      table td {
+        padding: 12px;
+        border: 1px solid #dee2e6;
+        text-align: left;
+      }
+      table th {
+        background-color: #e9ecef;
+      }
+      .logout-btn {
+        margin-top: auto; /* Đẩy nút đăng xuất xuống dưới cùng */
+        padding: 10px 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          min-width: 100px;
+          max-width: 100px;
+        }
+        .sidebar .logo-header h2 {
+          display: none;
+        }
+        .sidebar ul li {
+          padding: 10px 15px;
+        }
+        .main-content {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar d-flex flex-column">
+      <a href="/" class="logo-header">
+        <img src="/images/logo.png" alt="FiFash Logo" />
+        <h2>FiFash.</h2>
+      </a>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="/products">Product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/categories">Category</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Order</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Statistical</a>
+        </li>
+      </ul>
+      <div class="logout-btn">
+        <p class="text-center text-white mb-2">
+          Hello, <%= username ? username : 'Guest' %>
+        </p>
+<form action="/users/logout" method="POST">
+    <button type="submit" class="btn btn-danger w-100">
+        Logout
+    </button>
+</form>
+
+      </div>
+    </aside>
+    <div class="main-content">
+    </div>
+  </body>
+</html>

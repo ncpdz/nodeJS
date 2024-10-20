@@ -1,0 +1,38 @@
+<%- include('../layouts/header'); %>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Create Product</h1>
+    <form action="/products" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" class="form-control" required step="0.01" />
+        </div>
+
+        <div class="form-group">
+            <label for="category_id">Category:</label>
+            <select id="category_id" name="category_id" class="form-control" required>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.id %>"><%= category.name %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image URL:</label>
+            <input type="file" id="image" name="image" class="form-control-file" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+    <a href="/products" class="btn btn-secondary mt-3">Back to Products</a>
+</div>

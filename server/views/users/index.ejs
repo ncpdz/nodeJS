@@ -1,0 +1,46 @@
+<%- include('../layouts/header'); %>
+<style>
+    .desProduct {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="mb-4">Users</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.id %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.role %></td>
+                    <td><%= user.isActive == 1 ? 'Active' : 'Inactive' %></td> 
+                    <td>
+                        <a href="/users/edit/<%= user.id %>" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="/users/delete/<%= user.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        <form action="/users/toggle-active/<%= user.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-secondary btn-sm">
+                                <%= user.isActive == 1 ? 'Deactivate' : 'Activate' %>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,46 @@
+<%- include('../layouts/header'); %>
+<style>
+    .desProduct{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="mb-4">Products</h1>
+    <a href="/products/create" class="btn btn-primary mb-3">Add New Product</a>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(product => { %>
+                <tr>
+                    <td><%= product.id %></td>
+                    <td><%= product.name %></td>
+                    <td>
+                        <img width="100px" src="/uploads/<%= product.image %>" alt="<%= product.name %>" class="img-thumbnail" />
+                    </td>
+                    <td class="desProduct"><%= product.description %></td>
+                    <td><%= product.price %></td>
+                    <td><%= product.Category ? product.Category.name : 'N/A' %></td> 
+                    <td>
+                        <a href="/products/edit/<%= product.id %>" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="/products/delete/<%= product.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
