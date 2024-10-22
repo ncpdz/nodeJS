@@ -22,6 +22,7 @@ router.use(authMiddleware);
 
 router.get("/", UsersController.index);
 router.get("/edit/:id", UsersController.edit);
+router.get("/current", UsersController.currentUser);
 router.post("/edit/:id", UsersController.update);
 router.post("/delete/:id", UsersController.delete);
 router.post("/logout", UsersController.logout);

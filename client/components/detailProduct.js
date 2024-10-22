@@ -1,4 +1,4 @@
-function productDetailPage({id, name, description, image, price, Category }) {
+function productDetailPage({ id, name, description, image, price, Category }) {
   const imageBaseURL = "http://localhost:3000/uploads/";
 
   return `
@@ -16,7 +16,7 @@ function productDetailPage({id, name, description, image, price, Category }) {
             <h2 class="text-3xl font-bold mb-2">${name}</h2>
             <p class="text-gray-600 mb-4">Danh mục: ${Category.name}</p>
             <div class="mb-4">
-              <span class="text-2xl font-bold mr-2">${price}</span>
+              <span class="text-2xl font-bold mr-2">${price} VND</span>
             </div>
             <p class="text-gray-700 mb-6">${description}</p>
 
@@ -27,7 +27,7 @@ function productDetailPage({id, name, description, image, price, Category }) {
             </div>
 
             <div class="flex space-x-4 mb-6">
-              <button onclick="addToCart(${id}, 1)"
+              <button onclick="addToCart(${id}, document.getElementById('quantity').value)"
                 class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 Thêm vào giỏ hàng
               </button>

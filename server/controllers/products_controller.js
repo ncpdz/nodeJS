@@ -62,8 +62,8 @@ class ProductsController {
 
             const image = imageFile ? imageFile : product.image;
 
-            console.log(`Updating Product ID: ${req.params.id}`);
-            console.log({ name, description, price, category_id, image });
+            // console.log(`Updating Product ID: ${req.params.id}`);
+            // console.log({ name, description, price, category_id, image });
 
             await Product.update(
                 { name, description, price, category_id, image },

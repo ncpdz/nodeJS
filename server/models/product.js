@@ -1,7 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require("./connectDB");
 const Category = require('./category');
-
 class Product extends Model {}
 
 Product.init({
@@ -30,5 +29,4 @@ Product.init({
 }, { sequelize, modelName: 'Product' });
 
 Product.belongsTo(Category, { foreignKey: 'category_id' });
-
 module.exports = Product;
