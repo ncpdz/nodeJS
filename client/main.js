@@ -34,7 +34,6 @@ async function fetchAndDisplayUser() {
   }
 }
 
-// Logout functionality
 async function logout() {
   const url = "http://localhost:3000/users/logout";
   try {
@@ -46,13 +45,11 @@ async function logout() {
   }
 }
 
-// Logout button event listener
 const logoutElement = document.querySelector("#logoutLink");
 if (logoutElement) {
   logoutElement.addEventListener("click", logout);
 }
 
-// Define routes
 router
   .on("/", async () => {
     showPage(`<p class="text-center">Đang tải...</p>`);
@@ -105,15 +102,20 @@ async function addToCart(productId, quantity = 1) {
     const response = await axios.post(
       url,
       { productId, quantity },
-      { withCredentials: true }
+      { withCredentials: true } // Ensures that cookies (such as session cookies) are sent
     );
-    alert(response.data.message);
+    // Display a message when successfully added to the cart
+    alert(response.data.message || "Product added to cart successfully!");
+    
+    // Dispatch an event to update the cart display, if necessary
     window.dispatchEvent(new Event("cartUpdated"));
   } catch (error) {
-    console.error("Error adding to cart:", error);
-    alert("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
+    // Handle errors by displaying an alert with the error message
+    console.error("Error adding product to cart:", error);
+    alert("Failed to add product to cart. Please try again.");
   }
 }
+window.addToCart = addToCart;
 
 async function removeFromCart(productId) {
   const url = "http://localhost:3000/api/cart/remove";

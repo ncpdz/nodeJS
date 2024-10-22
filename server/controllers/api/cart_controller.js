@@ -30,6 +30,7 @@ class CartController {
 
       if (cartItem) {
         cartItem.quantity += parseInt(quantity);
+        cartItem.price = product.price;
         await cartItem.save();
       } else {
         cartItem = await Cart.create({
@@ -45,7 +46,7 @@ class CartController {
         cart: cartItem,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error adding to cart:", error);
       return res
         .status(500)
         .json({ error: "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng." });
@@ -54,22 +55,19 @@ class CartController {
 
   static async getCart(req, res) {
     try {
-      // Check if userId is available in the session
       const userId = req.session.userId;
       if (!userId) {
         return res.status(401).json({ error: "User not authenticated." });
       }
 
-      // Fetch cart items for the user
       const cartItems = await Cart.findAll({
         where: { userId: userId },
         include: [{ model: Product, attributes: ["name", "price"] }],
       });
 
-      // Map the results to the desired format
       const detailedCart = cartItems.map((item) => ({
         productId: item.productId,
-        name: item.Product.name, // Ensure this is correct based on your model associations
+        name: item.Product.name,
         price: item.price,
         quantity: item.quantity,
         total: item.price * item.quantity,
@@ -107,23 +105,27 @@ class CartController {
 
       return res.json({ message: "Đã xóa sản phẩm khỏi giỏ hàng." });
     } catch (error) {
-      console.error(error);
+      console.error("Error removing from cart:", error);
       return res
         .status(500)
         .json({ error: "Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng." });
     }
   }
 
-  // Xóa toàn bộ giỏ hàng (từ DB)
   static async clearCart(req, res) {
     try {
+      const userId = req.session.userId;
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated." });
+      }
+
       await Cart.destroy({
-        where: { userId: req.session.userId },
+        where: { userId: userId },
       });
 
       return res.json({ message: "Đã xóa toàn bộ giỏ hàng." });
     } catch (error) {
-      console.error(error);
+      console.error("Error clearing cart:", error);
       return res.status(500).json({ error: "Đã xảy ra lỗi khi xóa giỏ hàng." });
     }
   }
