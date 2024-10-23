@@ -4,6 +4,7 @@ import homePage from "./components/homePage";
 import companyPage from "./components/companyPage";
 import productDetailPage from "./components/detailProduct";
 import cartPage from "./components/cartPage";
+import wishlistPage from "./components/wishlistPage";
 import axios from "axios";
 
 const router = new Navigo("/");
@@ -84,7 +85,12 @@ router
   })
   .on("/cart", async () => {
     await renderCartPage();
+  })
+  .on("/wishlist", async () => {
+    await renderWishlistPage(); 
   });
+
+router.resolve();
 
 fetchAndDisplayUser();
 
@@ -117,9 +123,9 @@ window.addToCart = addToCart;
 async function removeFromCart(productId) {
   const url = "http://localhost:3000/api/cart/remove";
   try {
-    const response = await axios.delete(url, { 
-      data: { productId }, 
-      withCredentials: true 
+    const response = await axios.delete(url, {
+      data: { productId },
+      withCredentials: true,
     });
     alert(response.data.message);
     window.dispatchEvent(new Event("cartUpdated"));
@@ -134,7 +140,7 @@ async function clearCart() {
   const url = "http://localhost:3000/api/cart/clear";
   try {
     const response = await axios.delete(url, { withCredentials: true });
-    alert(response.data.message); 
+    alert(response.data.message);
     window.dispatchEvent(new Event("cartUpdated"));
     await renderCartPage();
   } catch (error) {
@@ -146,7 +152,7 @@ async function checkoutCart() {
   const url = "http://localhost:3000/api/cart/checkout";
   try {
     const response = await axios.delete(url, { withCredentials: true });
-    alert(response.data.message); 
+    alert(response.data.message);
     window.dispatchEvent(new Event("cartUpdated"));
     await renderCartPage();
   } catch (error) {
@@ -173,7 +179,9 @@ async function renderCartPage() {
     });
 
     document.querySelector(".clear-cart").addEventListener("click", clearCart);
-    document.querySelector(".checkout-btn").addEventListener("click", checkoutCart);
+    document
+      .querySelector(".checkout-btn")
+      .addEventListener("click", checkoutCart);
   } catch (error) {
     console.error("Error fetching cart data:", error);
     showPage(
@@ -196,3 +204,64 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("cartUpdated", () => {
   console.log("Cart has been updated");
 });
+
+async function addToWishlist(productId) {
+  const url = "http://localhost:3000/api/wishlist/add";
+  try {
+    const response = await axios.post(
+      url,
+      { productId },
+      { withCredentials: true }
+    );
+    alert(response.data.message || "Đã thêm sản phẩm vào mục yêu thích!");
+  } catch (error) {
+    console.error("Error adding to wishlist:", error);
+    alert(
+      error.response?.data?.error ||
+        "Không thể thêm sản phẩm vào mục yêu thích. Vui lòng thử lại."
+    );
+  }
+}
+window.addToWishlist = addToWishlist;
+
+async function renderWishlistPage() {
+  showPage(`<p class="text-center">Đang tải danh sách yêu thích...</p>`);
+  const url = "http://localhost:3000/api/wishlist";
+  try {
+    const response = await axios.get(url, { withCredentials: true });
+    const wishlist = response.data.wishlist;
+
+    showPage(wishlistPage(wishlist));
+
+    document.querySelectorAll(".remove-wishlist-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const productId = button.getAttribute("data-product-id");
+        removeFromWishlist(productId);
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching wishlist data:", error);
+    showPage(
+      "<p class='text-center text-red-500'>Đã xảy ra lỗi khi lấy danh sách yêu thích. Vui lòng thử lại sau.</p>"
+    );
+  }
+}
+
+async function removeFromWishlist(productId) {
+  const url = "http://localhost:3000/api/wishlist/remove";
+  try {
+    const response = await axios.post(
+      url,
+      { productId },
+      { withCredentials: true }
+    );
+    alert(response.data.message);
+    await renderWishlistPage();
+  } catch (error) {
+    console.error("Error removing from wishlist:", error);
+    alert("Đã xảy ra lỗi khi xóa sản phẩm khỏi mục yêu thích.");
+  }
+}
+window.removeFromWishlist = removeFromWishlist;
+
+

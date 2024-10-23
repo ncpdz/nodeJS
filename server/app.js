@@ -14,7 +14,7 @@ const sequelize = require("./models/connectDB");
 require("dotenv").config();
 const apiProductRoutes = require("./routes/api/apiProduct");
 const apiUserRoutes = require("./routes/api/apiUser");
-const authMiddleware = require("./middleware/auth");
+const apiWishListRoutes = require("./routes/api/apiWish");
 const setUsernameMiddleware = require("./middleware/setUsername");
 const apiCartRoutes = require("./routes/api/apiCart");
 
@@ -28,10 +28,10 @@ app.set("trust proxy", 1);
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Adjust this to your front-end URL
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // Allow credentials (cookies) to be sent
+    credentials: true, 
   })
 );
 
@@ -80,20 +80,6 @@ app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use(
-//   session({
-//     secret: "some_secure_random_string",
-//     store: store,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       maxAge: 30 * 60 * 1000,
-//       secure: false,
-//       httpOnly: true,
-//     },
-//   })
-// );
-
 app.use(session({
   secret: 'your_secret_key',
   resave: false,
@@ -114,6 +100,7 @@ app.use("/users", userRoutes);
 app.use("/api/products", apiProductRoutes);
 app.use("/api/user", apiUserRoutes);
 app.use("/api/cart", apiCartRoutes);
+app.use("/api/wishlist", apiWishListRoutes);
 
 app.get("/", (req, res) => {
   res.redirect("/users/login");

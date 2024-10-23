@@ -31,8 +31,8 @@ function productDetailPage({ id, name, description, image, price, Category }) {
                 class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 Thêm vào giỏ hàng
               </button>
-              <button
-                class="bg-gray-200 flex gap-2 items-center text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              <button onclick="addToWishlist(${id})"
+                class="wishlist-btn bg-gray-200 flex gap-2 items-center text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                 Yêu thích
               </button>
             </div>
