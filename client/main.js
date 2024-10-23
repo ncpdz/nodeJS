@@ -102,15 +102,12 @@ async function addToCart(productId, quantity = 1) {
     const response = await axios.post(
       url,
       { productId, quantity },
-      { withCredentials: true } // Ensures that cookies (such as session cookies) are sent
+      { withCredentials: true }
     );
-    // Display a message when successfully added to the cart
     alert(response.data.message || "Product added to cart successfully!");
-    
-    // Dispatch an event to update the cart display, if necessary
+
     window.dispatchEvent(new Event("cartUpdated"));
   } catch (error) {
-    // Handle errors by displaying an alert with the error message
     console.error("Error adding product to cart:", error);
     alert("Failed to add product to cart. Please try again.");
   }
@@ -120,14 +117,13 @@ window.addToCart = addToCart;
 async function removeFromCart(productId) {
   const url = "http://localhost:3000/api/cart/remove";
   try {
-    const response = await axios.post(
-      url,
-      { productId },
-      { withCredentials: true }
-    );
+    const response = await axios.delete(url, { 
+      data: { productId }, 
+      withCredentials: true 
+    });
     alert(response.data.message);
     window.dispatchEvent(new Event("cartUpdated"));
-    await renderCartPage(); // Refresh cart page after removal
+    await renderCartPage();
   } catch (error) {
     console.error("Error removing from cart:", error);
     alert("Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng.");
@@ -137,10 +133,22 @@ async function removeFromCart(productId) {
 async function clearCart() {
   const url = "http://localhost:3000/api/cart/clear";
   try {
-    const response = await axios.post(url, {}, { withCredentials: true });
-    alert(response.data.message);
+    const response = await axios.delete(url, { withCredentials: true });
+    alert(response.data.message); 
     window.dispatchEvent(new Event("cartUpdated"));
-    await renderCartPage(); // Refresh cart page after clearing
+    await renderCartPage();
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    alert("Đã xảy ra lỗi khi xóa giỏ hàng.");
+  }
+}
+async function checkoutCart() {
+  const url = "http://localhost:3000/api/cart/checkout";
+  try {
+    const response = await axios.delete(url, { withCredentials: true });
+    alert(response.data.message); 
+    window.dispatchEvent(new Event("cartUpdated"));
+    await renderCartPage();
   } catch (error) {
     console.error("Error clearing cart:", error);
     alert("Đã xảy ra lỗi khi xóa giỏ hàng.");
@@ -153,7 +161,9 @@ async function renderCartPage() {
   try {
     const response = await axios.get(url, { withCredentials: true });
     const cart = response.data.cart;
+
     showPage(cartPage(cart));
+    console.log(cart);
 
     document.querySelectorAll(".remove-btn").forEach((button) => {
       button.addEventListener("click", () => {
@@ -163,6 +173,7 @@ async function renderCartPage() {
     });
 
     document.querySelector(".clear-cart").addEventListener("click", clearCart);
+    document.querySelector(".checkout-btn").addEventListener("click", checkoutCart);
   } catch (error) {
     console.error("Error fetching cart data:", error);
     showPage(

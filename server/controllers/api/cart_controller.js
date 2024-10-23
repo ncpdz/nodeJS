@@ -1,5 +1,6 @@
 const Product = require("../../models/product");
 const Cart = require("../../models/cart");
+const User = require("../../models/user");
 
 class CartController {
   static async addToCart(req, res) {
@@ -62,13 +63,14 @@ class CartController {
 
       const cartItems = await Cart.findAll({
         where: { userId: userId },
-        include: [{ model: Product, attributes: ["name", "price"] }],
+        include: [{ model: Product, attributes: ["name", "price", "image"] }],
       });
 
       const detailedCart = cartItems.map((item) => ({
         productId: item.productId,
         name: item.Product.name,
-        price: item.price,
+        price: item.Product.price,
+        image: item.Product.image,
         quantity: item.quantity,
         total: item.price * item.quantity,
       }));
@@ -127,6 +129,26 @@ class CartController {
     } catch (error) {
       console.error("Error clearing cart:", error);
       return res.status(500).json({ error: "Đã xảy ra lỗi khi xóa giỏ hàng." });
+    }
+  }
+  static async checkoutCart(req, res) {
+    try {
+      const userId = req.session.userId;
+      const userName = req.session.username; // Assuming username is stored in session
+
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated." });
+      }
+
+      // Clear the cart for the user
+      await Cart.destroy({
+        where: { userId: userId },
+      });
+
+      return res.json({ message: `${userName} đã mua hàng thành công.` }); // Use the username from session
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      return res.status(500).json({ error: "Đã xảy ra lỗi khi thanh toán." });
     }
   }
 }

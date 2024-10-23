@@ -6,9 +6,9 @@ function productDetailPage({ id, name, description, image, price, Category }) {
       <div class="container mx-auto px-4 py-8">
         <div class="flex flex-wrap -mx-4">
           <!-- Hình Ảnh Sản Phẩm -->
-          <div class="w-full md:w-1/2 px-4 mb-8">
+          <div class="w-full md:w-1/2 px-4 mb-8 flex justify-center">
             <img src="${imageBaseURL}${image}" alt="${name}"
-                 class="w-full h-auto rounded-lg shadow-md mb-4" id="mainImage">
+                 class="w-[80%] h-auto rounded-lg shadow-md mb-4" id="mainImage">
           </div>
 
           <!-- Chi Tiết Sản Phẩm -->
