@@ -1,14 +1,5 @@
-<!-- views/users/edit.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>Edit User - FiFash</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
-</head>
-<body>
-    <%- include('../layouts/header'); %>
-    <div class="main-content">
+ <%- include('../layouts/header'); %>
+ <div class="container mt-5">
         <h1>Edit User</h1>
         <form action="/users/edit/<%= user.id %>" method="POST">
             <div class="mb-3">
@@ -29,5 +20,5 @@
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
-</body>
-</html>
+
+ 

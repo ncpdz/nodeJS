@@ -1,5 +1,4 @@
 function homePage(data) {
-  // Create a search function
   const renderProducts = (filteredData) => {
     return filteredData
       .map((item) => {
@@ -32,7 +31,6 @@ function homePage(data) {
       .join("");
   };
 
-  // Navigation with search input
   const navigation = `
     <nav id="store" class="w-[97%] z-30 top-0 px-6 py-1">
       <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
@@ -46,17 +44,14 @@ function homePage(data) {
     </nav>
   `;
 
-  // Render the initial product list
   let displayedProducts = data;
 
-  // Event listener for search input
   const handleSearch = () => {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
     displayedProducts = data.filter(item => item.name.toLowerCase().includes(searchQuery));
     document.getElementById('product-container').innerHTML = renderProducts(displayedProducts);
   };
 
-  // Set up event listener
   setTimeout(() => {
     document.getElementById('search-input').addEventListener('input', handleSearch);
   }, 0);

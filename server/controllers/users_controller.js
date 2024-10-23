@@ -66,10 +66,6 @@ class UsersController {
         email,
       });
 
-      req.session.userId = newUser.id;
-      req.session.role = newUser.role;
-      req.session.username = newUser.username;
-
       return res.redirect("/users/login");
     } catch (error) {
       console.error(error);
@@ -134,13 +130,14 @@ class UsersController {
       });
     }
   }
+
   static async currentUser(req, res) {
     if (!req.session.userId) {
-      return res.status(401).json({ error: "Chưa đăng nhập." }); // Not logged in
+      return res.status(401).json({ error: "Chưa đăng nhập." }); 
     }
 
     try {
-      const user = await User.findByPk(req.session.userId); // Get user by ID from session
+      const user = await User.findByPk(req.session.userId); 
       if (!user) {
         return res.status(404).json({ error: "Người dùng không tồn tại." });
       }
@@ -149,7 +146,7 @@ class UsersController {
         id: user.id,
         username: user.username,
         role: user.role,
-      }); // Return user data
+      }); 
     } catch (error) {
       console.error(error);
       return res

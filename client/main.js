@@ -1,13 +1,18 @@
 import "./style.css";
 import Navigo from "navigo";
 import homePage from "./components/homePage";
-import companyPage from "./components/companyPage";
 import productDetailPage from "./components/detailProduct";
 import cartPage from "./components/cartPage";
 import wishlistPage from "./components/wishlistPage";
 import axios from "axios";
 
 const router = new Navigo("/");
+
+function showPage(htmlPage) {
+  const app = document.querySelector("#app");
+  app.innerHTML = htmlPage;
+  router.updatePageLinks();
+}
 
 async function fetchAndDisplayUser() {
   const url = "http://localhost:3000/users/current";
@@ -20,8 +25,6 @@ async function fetchAndDisplayUser() {
     const userElement = document.querySelector("#userNameHere");
     if (userElement) {
       userElement.textContent = user.username || "Guest";
-      // Optionally uncomment the following line to link to the profile page
-      // userElement.href = "/profile";
     }
   } catch (error) {
     console.error(
@@ -39,7 +42,7 @@ async function logout() {
   const url = "http://localhost:3000/users/logout";
   try {
     await axios.post(url, {}, { withCredentials: true });
-    window.location.href = "http://localhost:3000/users/login"; // Redirect after logout
+    window.location.href = "http://localhost:3000/users/login"; 
   } catch (error) {
     console.error("Error logging out:", error);
     alert("Đã xảy ra lỗi khi đăng xuất.");
@@ -65,9 +68,6 @@ router
       );
     }
   })
-  .on("/company", () => {
-    showPage(companyPage());
-  })
   .on(`/product/:id`, async (params) => {
     const productId = params.data.id;
     const url = `http://localhost:3000/api/products/${productId}`;
@@ -91,16 +91,7 @@ router
   });
 
 router.resolve();
-
 fetchAndDisplayUser();
-
-function showPage(htmlPage) {
-  const app = document.querySelector("#app");
-  app.innerHTML = htmlPage;
-  router.updatePageLinks();
-}
-
-router.resolve();
 
 async function addToCart(productId, quantity = 1) {
   const url = "http://localhost:3000/api/cart/add";
